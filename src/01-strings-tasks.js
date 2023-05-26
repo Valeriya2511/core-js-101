@@ -19,7 +19,7 @@
  *   '',  'bb'  => 'bb'
  */
 function concatenateStrings(value1, value2) {
-  return value1 + value2
+  return value1 + value2;
 }
 
 
@@ -35,7 +35,7 @@ function concatenateStrings(value1, value2) {
  *   ''      => 0
  */
 function getStringLength(value) {
-  return value.length
+  return value.length;
 }
 
 /**
@@ -52,7 +52,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-  return `Hello, ${firstName} ${lastName}!`
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -66,7 +66,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-  return value.replace(/Hello, /gi, '').replace(/!/gi, '')
+  return value.replace(/Hello, /gi, '').replace(/!/gi, '');
 }
 
 
@@ -81,7 +81,7 @@ function extractNameFromTemplate(value) {
  *   'cat'       => 'c'
  */
 function getFirstChar(value) {
-  return value[0]
+  return value[0];
 }
 
 /**
@@ -111,7 +111,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'cat', 3 => 'catcatcat'
  */
 function repeatString(value, count) {
-  return value.repeat(count)
+  return value.repeat(count);
 }
 
 /**
@@ -127,7 +127,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-  return str.replace(value, '')
+  return str.replace(value, '');
 }
 
 /**
@@ -142,7 +142,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.replace(/[<>]/gi, '')
+  return str.replace(/[<>]/gi, '');
 }
 
 
@@ -203,10 +203,10 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-  let top = `┌${'─'.repeat(width-2)}┐\n`
-  let mid = `|${' '.repeat(width-2)}|\n`
-  let bot = `└${'─'.repeat(width-2)}┘\n`
-  return top + mid.repeat(height - 2) + bot
+  const top = `┌${'─'.repeat(width - 2)}┐\n`;
+  const mid = `│${' '.repeat(width - 2)}│\n`.repeat(height - 2);
+  const bot = `└${'─'.repeat(width - 2)}┘\n`;
+  return top + mid + bot;
 }
 
 
@@ -227,7 +227,21 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  return str.replace(/[a-z]/gi, letter => String.fromCharCode(letter.charCodeAt(0) + (letter.toLowerCase() <= 'm' ? 13 : -13)));
+  return str.split('').map((el) => {
+    if (el.charCodeAt(0) < 65) {
+      return el;
+    }
+    if (el.charCodeAt(0) < 91) {
+      if (el.toLocaleLowerCase().charCodeAt(0) <= 109) {
+        return String.fromCharCode(el.toLocaleLowerCase().charCodeAt(0) + 13).toLocaleUpperCase();
+      }
+      return String.fromCharCode(el.toLocaleLowerCase().charCodeAt(0) - 13).toLocaleUpperCase();
+    }
+    if (el.charCodeAt(0) <= 109) {
+      return String.fromCharCode(el.charCodeAt(0) + 13);
+    }
+    return String.fromCharCode(el.charCodeAt(0) - 13);
+  }).join('');
 }
 
 /**
@@ -244,11 +258,10 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-  if(typeof value === 'string' || value instanceof String) {
-    return true
-  } else {
-    return false
+  if (typeof value === 'string' || value instanceof String) {
+    return true;
   }
+  return false;
 }
 
 
@@ -277,12 +290,14 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  let arr = ['A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣','A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦','A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥','A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];
-  for (let i = 0; i < arr.length; i++){
-    if(value.includes(arr[i])) {
-      return i + 1
+  const arr = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣', 'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦', 'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥', 'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
+  let card;
+  for (let i = 0; i < arr.length; i += 1) {
+    if (value.includes(arr[i])) {
+      card = i;
     }
   }
+  return card;
 }
 
 
