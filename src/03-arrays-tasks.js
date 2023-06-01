@@ -36,14 +36,8 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  const arr = [];
-  let i = 1;
-  while (i < len + len - 1) {
-    if (i % 2 === 0) i += 1;
-    arr.push(i);
-    i += 1;
-  }
-  return arr;
+  const arr = [...Array(len)];
+  return arr.map((el, i) => 2 * i + 1);
 }
 
 
@@ -242,11 +236,10 @@ function toArrayOfSquares(arr) {
  */
 function getMovingSum(arr) {
   const a = [];
-  let y = 0;
-  for (let i = 0; i < arr.length; i += 1) {
-    y += i;
-    a.push(y + arr[i]);
-  }
+  arr.reduce((prev, item) => {
+    a.push(prev + item);
+    return prev + item;
+  }, 0);
   return a;
 }
 
@@ -262,13 +255,7 @@ function getMovingSum(arr) {
  * [ "a" ] => []
  */
 function getSecondItems(arr) {
-  const a = [];
-  for (let i = 0; i < arr.length; i += 1) {
-    if (i % 2 === 0) {
-      a.push(arr[i + 1]);
-    }
-  }
-  return a;
+  return arr.filter((el, i) => i % 2 !== 0);
 }
 
 
@@ -445,6 +432,14 @@ function sortCitiesArray(arr) {
     if (a.country < b.country) {
       return -1;
     }
+    if (a.country === b.country) {
+      if (a.city > b.city) {
+        return 1;
+      }
+      if (a.city < b.city) {
+        return -1;
+      }
+    }
     return 0;
   });
 }
@@ -468,11 +463,7 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  const array = Array.from({ length: n }, () => Array.from({ length: n - 1 }, () => 0));
-  for (let i = 0; i < array.length; i += 1) {
-    array[i].splice(i, 0, 1);
-  }
-  return array;
+  return new Array(n).fill([...Array(n)]).map((el, i) => el.map((elem, j) => (i === j ? 1 : 0)));
 }
 
 /**
@@ -489,13 +480,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  const arr = [];
-  let s = start;
-  while (start <= end) {
-    arr.push(s);
-    s += 1;
-  }
-  return arr;
+  return [...Array(end - start + 1)].map((el, i) => start + i);
 }
 
 /**
@@ -615,7 +600,7 @@ function swapHeadAndTail(arr) {
   const partOne = [...arr].splice(0, part);
   const partTwo = [...arr].slice(-part);
   const array = [];
-
+  if (arr.length < 2) return arr;
   if (arr.length % 2 === 0) {
     array.push(partTwo.concat(partOne));
   } else {
